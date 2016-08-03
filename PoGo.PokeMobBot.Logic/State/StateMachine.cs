@@ -3,6 +3,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using PoGo.PokeMobBot.Logic.Common;
 using PoGo.PokeMobBot.Logic.Event;
 using PokemonGo.RocketAPI.Exceptions;
 
@@ -39,12 +40,13 @@ namespace PoGo.PokeMobBot.Logic.State
                 {
                     session.EventDispatcher.Send(new ErrorEvent
                     {
-                        Message = "Niantic Servers unstable, throttling API Calls."
+                        Message = session.Translation.GetTranslation(TranslationString.NianticServerUnstable)
                     });
+                    state = _initialState;
                 }
                 catch (OperationCanceledException)
                 {
-                    session.EventDispatcher.Send(new ErrorEvent {Message = "Current Operation was canceled."});
+                    session.EventDispatcher.Send(new ErrorEvent {Message = session.Translation.GetTranslation(TranslationString.OperationCanceled) });
                     state = _initialState;
                 }
                 catch (Exception ex)
